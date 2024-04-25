@@ -2,12 +2,14 @@ from flask import Flask, jsonify
 import config
 from exts import db, mail
 from blueprints.analyze import bp as analyze_bp
+from blueprints.login import bp as login_bp
 
 app = Flask(__name__)
 app.config.from_object(config)
 db.init_app(app)
 mail.init_app(app)
 app.register_blueprint(analyze_bp)
+app.register_blueprint(login_bp)
 
 # 在每个请求之后添加 CORS 头
 @app.after_request

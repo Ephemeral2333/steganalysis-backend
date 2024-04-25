@@ -1,15 +1,19 @@
 import io
-from exts import mail
-from utils import captcha, predict_image
-from flask import Blueprint, jsonify
+import time
+from utils import predict_image
+from flask import Blueprint, jsonify, session
 from flask import request
 from PIL import Image
-from flask_mail import Message
 
 from utils.QiniuTool import QiniuTool
 
 bp = Blueprint('analyze', __name__, url_prefix='/analyze')
 
+@bp.before_request
+def before_request():
+    # 获取header中的token
+    token = request.headers.get('Authorization')
+    print(token)
 
 @bp.route('/result', methods=['POST'])
 def result():
@@ -24,8 +28,7 @@ def result():
     image_bytes = file.read()
 
     # 图片上传到七牛云
-    res = QiniuTool().upload(image_bytes, file.filename)
-    print(res)
+    res = QiniuTool().upload(image_bytes, 'steganalysis/' + str(int(time.time())) + '_' + file.filename)
 
     image = Image.open(io.BytesIO(image_bytes))
     result = predict_image.predict(image)
@@ -33,10 +36,24 @@ def result():
     if result == 0:
         return jsonify({
             'code': 200,
-            'message': '非隐写图片'
+            'message': {
+                'result': '正常图片',
+                'url': res
+            }
         })
     else:
         return jsonify({
             'code': 200,
-            'message': '隐写图片'
+            'message': {
+                'result': '隐写图片',
+                'url': res
+            }
         })
+
+
+@bp.route('/test', methods=['GET'])
+def test():
+    return jsonify({
+        'code': 200,
+        'message': 'test'
+    })

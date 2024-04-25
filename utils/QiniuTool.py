@@ -12,8 +12,10 @@ class QiniuTool:
     def upload(self, image, newfilename):
         token = self.q.upload_token(self.bucket_name, newfilename, 3600)
         res = put_data(up_token=token, key=newfilename, data=image)
-        print(res)
+
+        url = current_app.config.get("QINIU_URL")
+
         if res[0]["key"] == newfilename:
-            return newfilename
+            return url + '/' + newfilename
         else:
             return False
