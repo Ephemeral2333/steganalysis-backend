@@ -35,14 +35,19 @@ def login():
     email = request.get_json().get('email')
     captcha = request.get_json().get('captcha')
 
-    print(email, captcha)
-
     from models.Captcha import Captcha
     from datetime import datetime, timedelta
     res = Captcha.query.filter(Captcha.email == email, Captcha.captcha == captcha).first()
     if res and res.captcha_time + timedelta(minutes=5) > datetime.now():
         # 删除该邮箱下的所有验证码
         Captcha.query.filter(Captcha.email == email).delete()
+
+        # 如果user表中没有该邮箱，则插入
+        from models.User import User
+        user = User.query.filter(User.email == email).first()
+        if not user:
+            user = User(email=email, join_date=datetime.now())
+            db.session.add(user)
 
         import hashlib
         token = hashlib.md5((email + current_app.config.get("SECRET_KEY")).encode()).hexdigest()
