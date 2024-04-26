@@ -37,6 +37,9 @@ def result():
         file.filename = file.filename.replace('.pgm', '.png')
         image.save(file.filename)
         image_show_url = QiniuTool().upload(open(file.filename, 'rb').read(), 'steganalysis/' + str(int(time.time())) + '_' + file.filename)
+        # 删除本地文件
+        import os
+        os.remove(file.filename)
     else:
         image_show_url = res
 
