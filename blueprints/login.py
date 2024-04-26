@@ -1,4 +1,4 @@
-from flask_mail import Message
+from flask_mail import Message, current_app
 from exts import db, mail
 from utils.captcha import getCaptcha
 
@@ -43,15 +43,17 @@ def login():
     if res and res.captcha_time + timedelta(minutes=5) > datetime.now():
         # 删除该邮箱下的所有验证码
         Captcha.query.filter(Captcha.email == email).delete()
-        # 将邮箱base64加密后存入session
-        import base64
-        session['email'] = base64.b64encode(email.encode()).decode()
+
+        import hashlib
+        token = hashlib.md5((email + current_app.config.get("SECRET_KEY")).encode()).hexdigest()
+        session['email'] = token
 
         db.session.commit()
         return jsonify({
             'code': 200,
             'message': {
-                'token': session['email'],
+                'email': email,
+                'token': token
             }
         })
     else:

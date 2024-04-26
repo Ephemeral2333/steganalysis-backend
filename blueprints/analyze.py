@@ -11,9 +11,7 @@ bp = Blueprint('analyze', __name__, url_prefix='/analyze')
 
 @bp.before_request
 def before_request():
-    # 获取header中的token
     token = request.headers.get('Authorization')
-    print(token)
 
 @bp.route('/result', methods=['POST'])
 def result():
@@ -49,11 +47,3 @@ def result():
                 'url': res
             }
         })
-
-
-@bp.route('/test', methods=['GET'])
-def test():
-    return jsonify({
-        'code': 200,
-        'message': 'test'
-    })
