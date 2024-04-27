@@ -3,13 +3,17 @@ import config
 from exts import db, mail
 from blueprints.analyze import bp as analyze_bp
 from blueprints.login import bp as login_bp
+from blueprints.insert import bp as insert_bp
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.config.from_object(config)
 db.init_app(app)
 mail.init_app(app)
 app.register_blueprint(analyze_bp)
 app.register_blueprint(login_bp)
+app.register_blueprint(insert_bp)
 
 # 在每个请求之后添加 CORS 头
 @app.after_request
@@ -17,7 +21,7 @@ def after_request(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Credentials'] = 'true'
     response.headers['Access-Control-Allow-Methods'] = 'POST'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, X-Requested-With'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, X-Requested-With, Authorization'
     return response
 
 
