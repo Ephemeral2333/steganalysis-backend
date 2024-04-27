@@ -27,6 +27,8 @@ def result():
     # 判断隐写图像
     image_bytes = file.read()
 
+    print(session.get('token'))
+
     # 图片上传到七牛云
     res = QiniuTool().upload(image_bytes, 'steganalysis/' + str(int(time.time())) + '_' + file.filename)
     image = Image.open(io.BytesIO(image_bytes))
@@ -51,7 +53,7 @@ def result():
     # 从user表中获取用户id
     from models.User import User
     user = User.query.filter(User.email == email).first()
-    history = History(user_id=user.id, result=result, image=res, created_time=datetime.now())
+    history = History(user_id=user.id, result=result, image=res, image_show=image_show_url, created_time=datetime.now())
     db.session.add(history)
     db.session.commit()
 

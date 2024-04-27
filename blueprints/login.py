@@ -50,8 +50,7 @@ def login():
 
         import hashlib
         token = hashlib.md5((email + current_app.config.get("SECRET_KEY")).encode()).hexdigest()
-        session['email'] = email
-        print(session.get('email'))
+        session['token'] = token
 
         db.session.commit()
         return jsonify({
