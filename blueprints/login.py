@@ -1,7 +1,6 @@
 from flask_mail import Message, current_app
 from exts import db, mail
 from utils.captcha import getCaptcha
-
 from flask import Blueprint, request, jsonify, session
 
 bp = Blueprint('login', __name__, url_prefix='/login')
@@ -51,7 +50,8 @@ def login():
 
         import hashlib
         token = hashlib.md5((email + current_app.config.get("SECRET_KEY")).encode()).hexdigest()
-        session['email'] = token
+        session['email'] = email
+        print(session.get('email'))
 
         db.session.commit()
         return jsonify({
