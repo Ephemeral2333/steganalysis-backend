@@ -18,10 +18,12 @@ def before_request():
 @bp.route('/result', methods=['POST'])
 def result():
     if 'file' not in request.files:
+        print('No file part')
         return jsonify({
             'code': 400,
             'message': 'No file part'
         })
+
     file = request.files['file']
 
     # 判断隐写图像

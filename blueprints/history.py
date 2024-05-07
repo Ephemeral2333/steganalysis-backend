@@ -41,6 +41,7 @@ def history_list():
     history_list = []
     for h in history:
         history_list.append({
+            'id': h.id,
             'result': h.result,
             'image': h.image,
             'image_show': h.image_show,
@@ -49,4 +50,32 @@ def history_list():
     return jsonify({
         'code': 200,
         'data': history_list
+    })
+
+
+@bp.route('/delete', methods=['DELETE'])
+def history_delete():
+    from models.History import History
+    email = request.headers.get('Email')
+    from models.User import User
+    user = User.query.filter(User.email == email).first()
+    if not user:
+        return jsonify({
+            'code': 400,
+            'message': '用户账号异常'
+        })
+
+    history_id = request.get_json().get('id')
+    history = History.query.filter(History.id == history_id).first()
+    if not history:
+        return jsonify({
+            'code': 400,
+            'message': '历史记录不存在'
+        })
+
+    db.session.delete(history)
+    db.session.commit()
+    return jsonify({
+        'code': 200,
+        'message': '删除成功'
     })

@@ -11,10 +11,10 @@ bp = Blueprint('insert', __name__, url_prefix='/steganography')
 
 @bp.route('/insertInfo', methods=['POST'])
 def insertInfo():
-    if 'file' not in request.files:
+    if 'file' not in request.files or request.files['file'].filename == '':
         return jsonify({
             'code': 400,
-            'message': 'No file part'
+            'message': '未上传图片'
         })
     file = request.files['file']
     radio = request.form.get('radio')
