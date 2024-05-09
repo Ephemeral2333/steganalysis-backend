@@ -59,6 +59,7 @@ def result():
     db.session.add(history)
     db.session.commit()
 
+
     if result == 0:
         return jsonify({
             'code': 200,

@@ -19,6 +19,7 @@ transform = transforms.Compose([
     transforms.ToTensor(),
 ])
 
+
 def predict(image):
     image = transform(image).unsqueeze(0).to(device)
     # Predict
@@ -28,6 +29,7 @@ def predict(image):
         prediction = outputs.data.max(1)[1]
 
     return prediction.item()
+
 
 if __name__ == '__main__':
     print(torch.cuda.is_available())
