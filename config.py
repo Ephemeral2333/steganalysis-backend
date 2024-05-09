@@ -21,8 +21,8 @@ MAIL_DEFAULT_SENDER = "steganalysis_admin@lili73.xyz"
 # Qiniu Config
 QINIU_AK = "Cp-4FWcMLiGQGpl2iNX1Ct5iFIczYCBuKpbR_D4N"
 QINIU_SK = "8y1Bu2t_t39ASveELIT5k-6Zfk9TrKwu592FN6Vt"
-QINIU_BUCKET_NAME = "liyh-0703"
-QINIU_URL = "scgbzlo6c.hb-bkt.clouddn.com"
+QINIU_BUCKET_NAME = "steganalysis"
+QINIU_URL = "ephelee.top"
 
 # Secret Key
 SECRET_KEY = '1234565'
