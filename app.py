@@ -6,6 +6,7 @@ from blueprints.login import bp as login_bp
 from blueprints.insert import bp as insert_bp
 from blueprints.history import bp as history_bp
 from blueprints.test import bp as test_bp
+from blueprints.data import bp as data_bp
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -17,6 +18,7 @@ app.register_blueprint(login_bp)
 app.register_blueprint(insert_bp)
 app.register_blueprint(history_bp)
 app.register_blueprint(test_bp)
+app.register_blueprint(data_bp)
 
 
 # 在每个请求之后添加 CORS 头

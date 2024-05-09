@@ -1,7 +1,9 @@
 import os
+import random
 import shlex
 import time
 
+import pandas as pd
 from flask import Blueprint, jsonify
 from flask import request
 import subprocess
@@ -40,7 +42,8 @@ def insertInfo():
 
     # 将隐写后的图片上传到七牛云
     from utils.QiniuTool import QiniuTool
-    res = QiniuTool().upload(open('steganography/image/stego/' + file.filename, 'rb').read(), 'steganography/' + str(int(time.time())) + '_' + file.filename)
+    res = QiniuTool().upload(open('steganography/image/stego/' + file.filename, 'rb').read(),
+                             'steganography/' + str(int(time.time())) + '_' + file.filename)
 
     # 删除本地文件
     os.remove('steganography/image/cover/' + file.filename)
@@ -52,3 +55,4 @@ def insertInfo():
             'url': res
         }
     })
+
