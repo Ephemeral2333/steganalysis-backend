@@ -2,7 +2,7 @@ from flask_mail import Message, current_app
 from exts import db, mail
 from utils.captcha import getCaptcha
 from flask import Blueprint, request, jsonify, session
-
+from models.User import User
 bp = Blueprint('login', __name__, url_prefix='/login')
 
 
@@ -41,8 +41,6 @@ def login():
         # 删除该邮箱下的所有验证码
         Captcha.query.filter(Captcha.email == email).delete()
 
-        # 如果user表中没有该邮箱，则插入
-        from models.User import User
         user = User.query.filter(User.email == email).first()
         if not user:
             user = User(email=email, join_date=datetime.now())

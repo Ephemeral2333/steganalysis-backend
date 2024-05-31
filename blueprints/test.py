@@ -14,6 +14,20 @@ from models.testmodel import TestModel
 bp = Blueprint('test', __name__, url_prefix='/test')
 
 
+@bp.before_request
+def before_request():
+    token = request.headers.get('Authorization')
+    email = request.headers.get('Email')
+
+    import hashlib
+    from flask import current_app
+    if not token or not email or token != hashlib.md5(
+            (email + current_app.config.get("SECRET_KEY")).encode()).hexdigest():
+        return jsonify({
+            'code': 400,
+            'message': '登录信息已过期，请重新登录'
+        })
+
 @bp.route('/upload', methods=['POST'])
 def upload():
     file = request.files.get('file')
