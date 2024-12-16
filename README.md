@@ -28,7 +28,7 @@ conda create -n steganalysis python==3.9
 conda activate steganalysis
 ```
 3. **安装依赖**
-安装https://github.com/Ephemeral2333/SRNet_CBAM 中的依赖
+安装 https://github.com/Ephemeral2333/SRNet_CBAM 中的依赖
 4. **下载预训练模型**
 将 SRNet_CBAM 的预训练模型权重文件放置在项目指定的模型目录下（如 `models/` ），确保模型能够正确加载并进行推理。
 5. **启动应用**
